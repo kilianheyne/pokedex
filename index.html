@@ -12,15 +12,26 @@
 <body onload="init()">
     <header class="content-limit">
         <div id="logo-area">
-            <img src="./assets/imgs/logo.png" alt="Logo Pokédex">
+            <img src="./assets/imgs/pokedex logo.png" alt="Logo Pokédex">
             <h1>Pokédex</h1>
         </div>
         <div id="input-area">
-            <input type="text" placeholder="Catch the one..." id="user-input" onkeyup="inputSearch()">
-            <span id="input-area-span">min. 3 letters</span>
+            <input type="text" placeholder="Catch the one..." id="user-input" oninput="inputSearch()">
+            <span id="input-area-span" class="hide">min. 3 letters</span>
         </div>
     </header>
     <main>
+        <div id="overlay" class="hide">
+            <button class="close-overlay" onclick="">X</button>
+            <div id="overlay-header">
+                <span>name</span>
+                <span>#ID</span>
+            </div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
         <div id="main-content" class="content-limit">
             
         </div>

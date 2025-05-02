@@ -19,7 +19,6 @@ async function renderCards(){
     for(i = 0; i < userSearch.length; i++ ){
         let detailResponse = await fetch(userSearch[i].url);
         let pokemonDetails = await detailResponse.json()
-        console.log(pokemonDetails);
         contentRef.innerHTML += cardsTemplate(pokemonDetails);
     }
 }
@@ -56,18 +55,22 @@ function addNewData(){
 }
 
 function inputSearch(){
-    let input = document.getElementById('user-input');
-    let inputValue = input.value.toLowerCase();
-    let mainRef = document.getElementById('main-content');
-
-    if (inputValue.length >= 3) {
-        userSearch = initArray.filter(pokemon => pokemon.name.includes(inputValue));
-        mainRef.innerHTML = "";
-        renderCards();
+    let inputValue = document.getElementById('user-input').value.toLowerCase();
+    if (inputValue.length === 0){
+        updateInputArea(initArray, 'hide', 'show');
+    } else if (inputValue.length >= 3){
+        let filteredArray = initArray.filter(pokemon => pokemon.name.includes(inputValue));
+        updateInputArea(filteredArray, 'hide', 'show');
     } else {
-        userSearch = initArray;
-        mainRef.innerHTML = "";
-        renderCards();
-        document.getElementById('input-area-span').style.flex;
+        updateInputArea(initArray, 'show', 'hide');
     }
+}
+
+function updateInputArea(array, add, remove){
+    let mainRef = document.getElementById('main-content');
+    mainRef.innerHTML = "";
+    userSearch = array;
+    renderCards();
+    document.getElementById('input-area-span').classList.add(add);
+    document.getElementById('input-area-span').classList.remove(remove);
 }

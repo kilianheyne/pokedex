@@ -41,6 +41,14 @@ header{
             margin-right: 16px;
         }
     }
+    #input-area{
+        display: flex;
+        flex-direction: column;
+
+        span{
+            display: none;
+        }
+    }
 }
 
 footer {

@@ -81,11 +81,12 @@ async function openOverlay(url){
     let urlDetails = await urlResponse.json()
     let overlayRef = document.getElementById('overlay');
     let flavorText = await returnFlavorText(urlDetails);
+    let evoChain = await returnEvolutions(urlDetails);
     overlayRef.innerHTML = "";
     overlayRef.style.zIndex = "15";
     overlayRef.classList.remove('hide');
     overlayRef.classList.add('show');
-    overlayRef.innerHTML += renderOverlayContainer(urlDetails, flavorText);
+    overlayRef.innerHTML += renderOverlayContainer(urlDetails, flavorText, evoChain);
 }
 
 function closeOverlay(){
@@ -95,7 +96,7 @@ function closeOverlay(){
     overlayRef.classList.add('hide');
 }
 
-function renderOverlayContainer(pokemonDetails, flavorText){
+function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
     return `<div id="overlay-container">
                 <div id="overlay-header">
                     <span># ${pokemonDetails.id}</span>
@@ -103,12 +104,6 @@ function renderOverlayContainer(pokemonDetails, flavorText){
                     <button class="close-overlay" onclick="closeOverlay()">X</button>
                 </div>
                 <div id="overlay-pokemon-details">
-                    <div id="pokemon-visuals">
-                        <div><img src="${pokemonDetails.sprites.versions['generation-iii']['ruby-sapphire'].front_default}" alt=""></div>
-                        <div>
-                            ${returnTypesOverlay(pokemonDetails)}
-                        </div>
-                    </div>
                     <div id="pokemon-info">
                         <div>
                             ${flavorText}
@@ -122,13 +117,18 @@ function renderOverlayContainer(pokemonDetails, flavorText){
                             <div class="flexCo" id="base-stats">
                                 ${returnPokemonStats(pokemonDetails)}
                             </div>
-                            <div>
-                                Hier findest Du die verschiedenen Entwicklung mit Level
-
+                            <div id="evo-chain">
+                                ${evoChain}
                             </div>
                             <div>
                                 Hier findest Du die allgemeinen Informationen zu einem Pokémon
                             </div>
+                        </div>
+                    </div>
+                    <div id="pokemon-visuals">
+                        <div><img src="${pokemonDetails.sprites.versions['generation-iii']['ruby-sapphire'].front_default}" alt=""></div>
+                        <div>
+                            ${returnTypesOverlay(pokemonDetails)}
                         </div>
                     </div>
                 </div>
@@ -167,8 +167,55 @@ function returnPokemonStats(details){
     return baseStats;
 }
 
-async function returnEvolutions(){
-    let evoResponse = await fetch(details.species.url);
-    console.log(evoResponse);
-    
+async function fetchEvolutionData(evoDetails){
+    const speciesResponse = await fetch(evoDetails.species.url);
+    const speciesData = await speciesResponse.json();
+
+    const evoUrl = speciesData.evolution_chain.url;
+    const evoResponse = await fetch(evoUrl);
+    const evoData = await evoResponse.json();
+
+    return evoData.chain;
+}
+
+async function fetchEvolutionSteps(stepDetails){
+    let evoSteps = [];
+
+    const evoName = stepDetails.species.name;
+    const evoLevel = stepDetails.evolution_details?.[0]?.min_level ?? null;
+    const evoImg = await fetchImageByName(evoName);
+
+    evoSteps.push({name: evoName, level: evoLevel, img: evoImg});
+
+    if(stepDetails.evolves_to.length > 0){
+        let nextEvo = await fetchEvolutionSteps(stepDetails.evolves_to[0]);
+        evoSteps = evoSteps.concat(nextEvo);
+    }
+
+    return evoSteps;
+}
+
+async function fetchImageByName(pokeName){
+    let imgResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
+    let imgData = await imgResponse.json();
+    return imgData.sprites.versions['generation-iii']['ruby-sapphire'].front_default;
+}
+
+async function returnEvolutions(evoDetails){
+    const evoChain = await fetchEvolutionData(evoDetails);
+    const evolutions = await fetchEvolutionSteps(evoChain);
+
+    let evolutionRoad = "";
+    for(let i = 0; i < evolutions.length; i++){
+        let evo = evolutions[i];
+        evolutionRoad += `<div class="evo-step flexCo">
+                            <img src="${evo.img}" alt="${evo.name}">
+                            <div>${evo.name.toUpperCase()}</div>
+                            <div>${evo.level ? 'ab Level ' + evo.level : '–'}</div>
+                        </div>`;
+        if (i < evolutions.length - 1) {
+            evolutionRoad += `<div class="evo-arrow">>>></div>`;
+        }
+    }
+    return evolutionRoad; 
 }

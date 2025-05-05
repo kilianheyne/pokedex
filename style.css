@@ -225,5 +225,14 @@ main{
                 border-right: 1px solid #0056b3;
             }
         }
+        #evo-chain{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .evo-step{
+            align-items: center;
+            text-align: center;
+        }
     }
 }

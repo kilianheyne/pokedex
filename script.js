@@ -1,22 +1,24 @@
 let initArray = [];
-let loadOffset = 0;
 let userSearch = [];
 
 function init(){
+    showLoadingGif();
     fetchData();
 }
 
 async function fetchData(){
-    let pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=25&offset=${loadOffset}`);
+    let offset = initArray.length; 
+    let pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=25&offset=${offset}`);
     let pokemonAsJSON = await pokemon.json();
     initArray.push(...pokemonAsJSON.results);
     userSearch = initArray;
-    renderCards();
+    await renderCards(offset);
+    hideLoadingGif();
 }
 
-async function renderCards(){
+async function renderCards(startIndex = 0){
     let contentRef = document.getElementById('main-content');
-    for(i = 0; i < userSearch.length; i++ ){
+    for(i = startIndex; i < userSearch.length; i++ ){
         let pokeURL = userSearch[i].url;
         let detailResponse = await fetch(pokeURL);
         let pokemonDetails = await detailResponse.json()
@@ -49,9 +51,8 @@ function renderTypes(details){
     return pokemonTypes;
 }
 
-function addNewData(){
-    loadOffset += 25;
-    initArray = [];
+async function addNewData(){
+    showLoadingGif();
     fetchData();
 }
 
@@ -257,4 +258,14 @@ function switchTab(tabName) {
             tab.classList.remove('active-tab');
         }
     }
+}
+
+function showLoadingGif(){
+    document.getElementById('loading-screen').classList.remove('hide');
+    document.getElementById('loading-screen').style.zIndex = '9999';
+}
+
+function hideLoadingGif(){
+    document.getElementById('loading-screen').classList.add('hide');
+    document.getElementById('loading-screen').style.zIndex = '-1';
 }

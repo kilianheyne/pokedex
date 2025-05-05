@@ -79,8 +79,12 @@ main{
     flex-direction: row;
 }
 .flexCo{
-    display: flex;
     flex-direction: column;
+}
+.active-tab{
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: default;
 }
 /*#endregion basics*/
 #main-content{
@@ -193,6 +197,7 @@ main{
 
                 #info-tabs{
                     justify-content: space-around;
+                    cursor: pointer;
                 }
             }
         }
@@ -226,13 +231,15 @@ main{
             }
         }
         #evo-chain{
-            display: flex;
             justify-content: space-around;
             align-items: center;
         }
         .evo-step{
             align-items: center;
             text-align: center;
+        }
+        #general-info{
+            flex-direction: column;
         }
     }
 }

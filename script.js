@@ -109,19 +109,18 @@ function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
                             ${flavorText}
                         </div>
                         <div class="show" id="info-tabs">
-                            <div>Base Stats</div>
-                            <div>Evolution Chain</div>
-                            <div>General Information</div>
+                            <div id="base-stats-tab" class="active-tab" onclick="switchTab('base-stats')">Base Stats</div>
+                            <div id="evo-chain-tab" onclick="switchTab('evo-chain')">Evolution Chain</div>
+                            <div id="general-info-tab" onclick="switchTab('general-info')">General Information</div>
                         </div>
                         <div>
-                            <div class="flexCo" id="base-stats">
+                            <div class="flexCo show" id="base-stats">
                                 ${returnPokemonStats(pokemonDetails)}
                             </div>
-                            <div id="evo-chain">
+                            <div class="hide" id="evo-chain">
                                 ${evoChain}
                             </div>
-                            <div id="general-info">
-                                Hier findest Du die allgemeinen Informationen zu einem Pokémon
+                            <div class="hide" id="general-info">
                                 ${getGeneralInfo(pokemonDetails)}
                             </div>
                         </div>
@@ -238,4 +237,24 @@ function getGeneralInfo(details){
                     <div><strong>Basis-Erfahrung:</strong> ${baseXp}</div>
                     <div><strong>Fähigkeiten:</strong> ${abilityNames}</div>`;
     return generalInfo;
+}
+
+function switchTab(tabName) {
+    let contents = ['base-stats', 'evo-chain', 'general-info'];
+    let tabIds = ['base-stats-tab', 'evo-chain-tab', 'general-info-tab'];
+
+    for (let i = 0; i < contents.length; i++) {
+        let content = document.getElementById(contents[i]);
+        let tab = document.getElementById(tabIds[i]);
+
+        if (contents[i] === tabName) {
+            content.classList.remove('hide');
+            content.classList.add('show');
+            tab.classList.add('active-tab');
+        } else {
+            content.classList.remove('show');
+            content.classList.add('hide');
+            tab.classList.remove('active-tab');
+        }
+    }
 }

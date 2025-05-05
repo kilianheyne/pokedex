@@ -120,8 +120,9 @@ function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
                             <div id="evo-chain">
                                 ${evoChain}
                             </div>
-                            <div>
+                            <div id="general-info">
                                 Hier findest Du die allgemeinen Informationen zu einem Pokémon
+                                ${getGeneralInfo(pokemonDetails)}
                             </div>
                         </div>
                     </div>
@@ -211,11 +212,30 @@ async function returnEvolutions(evoDetails){
         evolutionRoad += `<div class="evo-step flexCo">
                             <img src="${evo.img}" alt="${evo.name}">
                             <div>${evo.name.toUpperCase()}</div>
-                            <div>${evo.level ? 'ab Level ' + evo.level : '–'}</div>
+                            <div>${evo.level ? 'at level ' + evo.level : '–'}</div>
                         </div>`;
         if (i < evolutions.length - 1) {
             evolutionRoad += `<div class="evo-arrow">>>></div>`;
         }
     }
     return evolutionRoad; 
+}
+
+function getGeneralInfo(details){
+    const height = details.height / 10;
+    const weight = details.weight / 10;
+    const baseXp = details.base_experience;
+    const abilities = details.abilities;
+    let abilityNames = "";
+    for(i = 0; i < abilities.length; i++){
+        if (i > 0) {
+            abilityNames += ", ";
+        }
+        abilityNames += abilities[i].ability.name;
+    }
+    const generalInfo = `<div><strong>Größe:</strong> ${height} m</div>
+                    <div><strong>Gewicht:</strong> ${weight} kg</div>
+                    <div><strong>Basis-Erfahrung:</strong> ${baseXp}</div>
+                    <div><strong>Fähigkeiten:</strong> ${abilityNames}</div>`;
+    return generalInfo;
 }

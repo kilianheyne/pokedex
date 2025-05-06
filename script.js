@@ -128,7 +128,7 @@ function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
     return `<div id="overlay-container" onclick="event.stopPropagation()">
                 <div id="overlay-header">
                     <span># ${pokemonDetails.id}</span>
-                    <span>${pokemonDetails.name.toUpperCase()}</span>
+                    <h2>${pokemonDetails.name.toUpperCase()}</h2>
                     <button class="close-overlay" onclick="closeOverlay()">X</button>
                 </div>
                 <div id="overlay-pokemon-details">
@@ -154,13 +154,13 @@ function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
                         </div>
                     </div>
                     <div id="pokemon-visuals">
-                        <div><img src="${pokemonDetails.sprites.versions['generation-iii']['ruby-sapphire'].front_default}" alt=""></div>
+                        <img src="${pokemonDetails.sprites.other.showdown.front_default}" alt="">
                         <div>
                             ${returnTypesOverlay(pokemonDetails)}
                         </div>
                         <div class="overlay-navigation">
-                                <button onclick="showPreviousPokemon(${pokemonDetails.id})">⬅️</button>
-                                <button onclick="showNextPokemon(${pokemonDetails.id})">➡️</button>
+                                <button class="nav-btn" onclick="showPreviousPokemon(${pokemonDetails.id})">&#9664;</button>
+                                <button class="nav-btn" onclick="showNextPokemon(${pokemonDetails.id})">&#9654;</button>
                         </div>
                     </div>
                 </div>

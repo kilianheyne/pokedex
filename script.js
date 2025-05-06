@@ -90,6 +90,7 @@ async function openOverlay(pokemonId){
     overlayRef.classList.remove('hide');
     overlayRef.classList.add('show');
     overlayRef.innerHTML += renderOverlayContainer(urlDetails, flavorText, evoChain);
+    document.body.style.overflow = "hidden";
     hideLoadingGif();
 }
 
@@ -98,10 +99,11 @@ function closeOverlay(){
     overlayRef.classList.remove('show');
     overlayRef.classList.add('hide');
     overlayRef.style.zIndex = "-5";
+    document.body.style.overflow = "auto";
 }
 
 function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
-    return `<div id="overlay-container">
+    return `<div id="overlay-container" onclick="event.stopPropagation()">
                 <div id="overlay-header">
                     <span># ${pokemonDetails.id}</span>
                     <span>${pokemonDetails.name.toUpperCase()}</span>

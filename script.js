@@ -51,12 +51,12 @@ async function renderCards(startIndex = 0){
 function cardsTemplate(pokemon, bgColor){
     return `<div class="single-card" onclick="openOverlay(${pokemon.id})" style="--type-bg-color: ${bgColor}">
                 <div class="card-header">
+                    <h2 class="header-name">${pokemon.name.toUpperCase()}</h2>
                     <span class="header-number"># ${pokemon.id}</span>
-                    <span class="header-name">${pokemon.name.toUpperCase()}</span>
-                    <span></span>
                 </div>
                 <div class="card-image">
-                    <img src="${pokemon.sprites.versions['generation-iii']['ruby-sapphire'].front_default}" alt="">
+                    <img class="pokemon-static" src="${pokemon.sprites.versions['generation-iii']['ruby-sapphire'].front_default}" alt="${pokemon.name}">
+                    <img class="pokemon-gif" src="${pokemon.sprites.other.showdown.front_default}" alt="${pokemon.name}">
                 </div>
                 <div class="card-types">
                     ${renderTypes(pokemon)}

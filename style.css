@@ -113,13 +113,15 @@ main{
         border-radius: 4px;
         margin: 32px;
         padding: 12px;
-        width: 24%;
+        width: 12%;
         height: auto;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
 
         .card-header{
             display: flex; 
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             font-size: 18px;
             font-weight: 500;
             width: 100%;
@@ -134,14 +136,32 @@ main{
             width: 100%;
             height: auto;
             object-fit: contain;
-            border-radius: 11px;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
             transition: transform 0.3s ease;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 16px;
-        }
-        .card-image:hover{
+
+            img{
+                width: 96px;
+                height: 96px;
+                object-fit: contain;
+                transition: opacity 0.2s ease;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .pokemon-static {
+                z-index: 1;
+                opacity: 1;
+            }
+            .pokemon-gif {
+                z-index: 2;
+                opacity: 0;
+            }
         }
         .card-types{
             text-align: center;
@@ -159,7 +179,6 @@ main{
                 text-shadow: 1px 1px 0 #000;
                 box-shadow: 2px 2px 0 #000;
                 color: white;
-                background: var(--type-bg-color);
             }
         }
     }
@@ -167,7 +186,13 @@ main{
         background: var(--type-bg-color);
         transform: translateY(-5px);
         color: white;
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 0 #000;
+    }
+    .single-card:hover .pokemon-static {
+        opacity: 0;
+    }
+    .single-card:hover .pokemon-gif {
+        opacity: 1;
     }
 }
 .loading {
@@ -295,3 +320,22 @@ main{
         }
     }
 }
+
+.type-bug { background-color: #A8B820; }
+.type-dark { background-color: #705848; }
+.type-dragon { background-color: #7038F8; }
+.type-electric { background-color: #F8D030; color: #000; }
+.type-fairy { background-color: #EE99AC; }
+.type-fighting { background-color: #C03028; }
+.type-fire { background-color: #F08030; }
+.type-flying { background-color: #A890F0; }
+.type-ghost { background-color: #705898; }
+.type-grass { background-color: #78C850; }
+.type-ground { background-color: #E0C068; color: #000; }
+.type-ice { background-color: #98D8D8; color: #000; }
+.type-normal { background-color: #A8A878; }
+.type-poison { background-color: #A040A0; }
+.type-psychic { background-color: #F85888; }
+.type-rock { background-color: #B8A038; }
+.type-steel { background-color: #B8B8D0; color: #000; }
+.type-water { background-color: #6890F0; }

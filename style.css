@@ -24,14 +24,19 @@ body{
 
 header{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
     background: #E3350D;
     height: 144px;
     padding-left: 16px;
     padding-right: 16px;
+    width: 100%;
 
-    #logo-area{
+    .header-content{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        #logo-area{
         width: 50%;
         height: 144px;
         display: flex;
@@ -41,11 +46,14 @@ header{
             width: auto;
             margin-right: 16px;
         }
+        }
+        #input-area{
+            display: flex;
+            flex-direction: column;
+        }
     }
-    #input-area{
-        display: flex;
-        flex-direction: column;
-    }
+
+    
 }
 
 footer {
@@ -206,6 +214,23 @@ main{
                 align-items: center;
                 justify-content: center;
                 width: 34%;
+
+                .overlay-navigation {
+                    display: flex;
+                    justify-content: center;
+                    gap: 1rem;
+                    margin-top: 1rem;
+                }
+                .overlay-navigation button {
+                    font-size: 1.5rem;
+                    background-color: transparent;
+                    border: none;
+                    cursor: pointer;
+                }
+                .overlay-navigation button:disabled {
+                    opacity: 0.4;
+                    cursor: not-allowed;
+                }
             }
             #pokemon-info{
                 width: 66%;

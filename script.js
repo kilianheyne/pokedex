@@ -22,12 +22,12 @@ async function renderCards(startIndex = 0){
         let pokeURL = userSearch[i].url;
         let detailResponse = await fetch(pokeURL);
         let pokemonDetails = await detailResponse.json()
-        contentRef.innerHTML += cardsTemplate(pokemonDetails, pokeURL);
+        contentRef.innerHTML += cardsTemplate(pokemonDetails);
     }
 }
 
-function cardsTemplate(pokemon, pokeURL){
-    return `<div class="single-card" onclick="openOverlay('${pokeURL}')">
+function cardsTemplate(pokemon){
+    return `<div class="single-card" onclick="openOverlay(${pokemon.id})">
                 <div class="card-header">
                     <span class="header-number"># ${pokemon.id}</span>
                     <span class="header-name">${pokemon.name.toUpperCase()}</span>
@@ -77,7 +77,9 @@ function updateInputArea(array, add, remove){
     document.getElementById('input-area-span').classList.remove(remove);
 }
 
-async function openOverlay(url){
+async function openOverlay(pokemonId){
+    showLoadingGif();
+    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
     let urlResponse = await fetch(url);
     let urlDetails = await urlResponse.json()
     let overlayRef = document.getElementById('overlay');
@@ -88,13 +90,14 @@ async function openOverlay(url){
     overlayRef.classList.remove('hide');
     overlayRef.classList.add('show');
     overlayRef.innerHTML += renderOverlayContainer(urlDetails, flavorText, evoChain);
+    hideLoadingGif();
 }
 
 function closeOverlay(){
     let overlayRef = document.getElementById('overlay');
-    overlayRef.style.zIndex = "-5";
     overlayRef.classList.remove('show');
     overlayRef.classList.add('hide');
+    overlayRef.style.zIndex = "-5";
 }
 
 function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
@@ -130,6 +133,10 @@ function renderOverlayContainer(pokemonDetails, flavorText, evoChain){
                         <div><img src="${pokemonDetails.sprites.versions['generation-iii']['ruby-sapphire'].front_default}" alt=""></div>
                         <div>
                             ${returnTypesOverlay(pokemonDetails)}
+                        </div>
+                        <div class="overlay-navigation">
+                                <button onclick="showPreviousPokemon(${pokemonDetails.id})">⬅️</button>
+                                <button onclick="showNextPokemon(${pokemonDetails.id})">➡️</button>
                         </div>
                     </div>
                 </div>
@@ -268,4 +275,25 @@ function showLoadingGif(){
 function hideLoadingGif(){
     document.getElementById('loading-screen').classList.add('hide');
     document.getElementById('loading-screen').style.zIndex = '-1';
+}
+
+async function showNextPokemon(currentId){
+    const nextId = currentId + 1;
+    if(nextId > 1025) return; //aktuell maximale Anzahl an Pokémon
+    const alreadyInArray = initArray.find(pokemon => extractIdFromUrl(pokemon.url) === nextId);
+    if(!alreadyInArray){
+        await fetchData();
+    }
+    await openOverlay(nextId);
+}
+
+async function showPreviousPokemon(currentId){
+    const previousId = currentId - 1; 
+    if(previousId < 1) return;
+    await openOverlay(previousId);
+}
+
+function extractIdFromUrl(url) {
+    const parts = url.split('/').filter(part => part);
+    return parseInt(parts[parts.length - 1]);
 }

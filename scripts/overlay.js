@@ -1,22 +1,30 @@
 async function openOverlay(pokemonId){
     showLoadingGif();
-    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
-    let urlResponse = await fetch(url);
-    let urlDetails = await urlResponse.json()
-    let overlayRef = document.getElementById('overlay');
-    let flavorText = await returnFlavorText(urlDetails);
-    let evoChain = await returnEvolutions(urlDetails);
+    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+    const urlResponse = await fetch(url);
+    const urlDetails = await urlResponse.json()
+    const flavorText = await returnFlavorText(urlDetails);
+    const evoChain = await returnEvolutions(urlDetails);
+    const overlayRef = adjustOverlay();
+    
+    overlayRef.innerHTML += overlayContainerTemplate(urlDetails, flavorText, evoChain);
+    
+    updatePrevBtn(pokemonId);
+    hideLoadingGif();
+}
+
+function adjustOverlay(){
+    const overlayRef = document.getElementById('overlay');
     overlayRef.innerHTML = "";
     overlayRef.style.zIndex = "15";
     overlayRef.classList.remove('hide');
     overlayRef.classList.add('show');
-    overlayRef.innerHTML += overlayContainerTemplate(urlDetails, flavorText, evoChain);
     document.body.style.overflow = "hidden";
-    hideLoadingGif();
+    return overlayRef;
 }
 
 function closeOverlay(){
-    let overlayRef = document.getElementById('overlay');
+    const overlayRef = document.getElementById('overlay');
     overlayRef.classList.remove('show');
     overlayRef.classList.add('hide');
     overlayRef.style.zIndex = "-5";
@@ -26,25 +34,25 @@ function closeOverlay(){
 function returnTypesOverlay(details){
     let pokemonTypes = "";
     for (let type = 0; type < details.types.length; type++){
-        let typeName = details.types[type].type.name;
+        const typeName = details.types[type].type.name;
         pokemonTypes += `<span class="pokemon-type type-${typeName}">${typeName.toUpperCase()}</span>`;
     }
     return pokemonTypes;
 }
 
 async function returnFlavorText(details){
-    let textResponse = await fetch(details.species.url);
-    let textData = await textResponse.json();
-    let englishText = textData.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text;
-    let finalEnglishText = englishText.replace(/[\n\f\r]/g, ' ');
+    const textResponse = await fetch(details.species.url);
+    const textData = await textResponse.json();
+    const englishText = textData.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text;
+    const finalEnglishText = englishText.replace(/[\n\f\r]/g, ' ');
     return finalEnglishText;
 }
 
 function returnPokemonStats(details){
     let baseStats = "";
     for(let i = 0; i < details.stats.length; i++){
-        let statName = details.stats[i].stat.name;
-        let statPercentage = details.stats[i].base_stat / 2;
+        const statName = details.stats[i].stat.name;
+        const statPercentage = details.stats[i].base_stat / 2;
         baseStats += pokemonStatsTemplate(statName, statPercentage);
     }
     return baseStats;
@@ -69,15 +77,15 @@ async function fetchEvolutionSteps(stepDetails){
 
     evoSteps.push({name: evoName, level: evoLevel, img: evoImg});
     if(stepDetails.evolves_to.length > 0){
-        let nextEvo = await fetchEvolutionSteps(stepDetails.evolves_to[0]);
+        const nextEvo = await fetchEvolutionSteps(stepDetails.evolves_to[0]);
         evoSteps = evoSteps.concat(nextEvo);
     }
     return evoSteps;
 }
 
 async function fetchImageByName(pokeName){
-    let imgResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
-    let imgData = await imgResponse.json();
+    const imgResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
+    const imgData = await imgResponse.json();
     return imgData.sprites.versions['generation-iii']['ruby-sapphire'].front_default;
 }
 
@@ -86,7 +94,7 @@ async function returnEvolutions(evoDetails){
     const evolutions = await fetchEvolutionSteps(evoChain);
     let evolutionRoad = "";
     for(let i = 0; i < evolutions.length; i++){
-        let evo = evolutions[i];
+        const evo = evolutions[i];
         evolutionRoad += singleEvolutionTemplate(evo);
         if (i < evolutions.length - 1) {
             evolutionRoad += `<div class="evo-arrow">>>></div>`;
@@ -120,12 +128,12 @@ function getAbilityNames(details){
 }
 
 function switchTab(tabName) {
-    let contents = ['base-stats', 'evo-chain', 'general-info'];
-    let tabIds = ['base-stats-tab', 'evo-chain-tab', 'general-info-tab'];
+    const contents = ['base-stats', 'evo-chain', 'general-info'];
+    const tabIds = ['base-stats-tab', 'evo-chain-tab', 'general-info-tab'];
 
     for (let i = 0; i < contents.length; i++) {
-        let content = document.getElementById(contents[i]);
-        let tab = document.getElementById(tabIds[i]);
+        const content = document.getElementById(contents[i]);
+        const tab = document.getElementById(tabIds[i]);
 
         if (contents[i] === tabName) {
             content.classList.remove('hide');

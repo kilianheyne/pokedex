@@ -27,9 +27,9 @@ function init(){
 }
 
 async function fetchData(){
-    let offset = initArray.length; 
-    let pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=25&offset=${offset}`);
-    let pokemonAsJSON = await pokemon.json();
+    const offset = initArray.length; 
+    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=25&offset=${offset}`);
+    const pokemonAsJSON = await pokemon.json();
     initArray.push(...pokemonAsJSON.results);
     userSearch = initArray;
     await renderCards(offset);
@@ -37,13 +37,13 @@ async function fetchData(){
 }
 
 async function renderCards(startIndex = 0){
-    let contentRef = document.getElementById('main-content');
+    const contentRef = document.getElementById('main-content');
     for(i = startIndex; i < userSearch.length; i++ ){
-        let pokeURL = userSearch[i].url;
-        let detailResponse = await fetch(pokeURL);
-        let pokemonDetails = await detailResponse.json()
-        let primaryType = pokemonDetails.types[0].type.name;
-        let bgColor = typeColors[primaryType] || '#f1f1f1';
+        const pokeURL = userSearch[i].url;
+        const detailResponse = await fetch(pokeURL);
+        const pokemonDetails = await detailResponse.json()
+        const primaryType = pokemonDetails.types[0].type.name;
+        const bgColor = typeColors[primaryType] || '#f1f1f1';
         contentRef.innerHTML += cardsTemplate(pokemonDetails, bgColor);
     }
 }
@@ -51,7 +51,7 @@ async function renderCards(startIndex = 0){
 function renderTypes(details){
     let pokemonTypes = "";
     for (let type = 0; type < details.types.length; type++){
-        let typeName = details.types[type].type.name;
+        const typeName = details.types[type].type.name;
         pokemonTypes += `<span class="pokemon-type type-${typeName}">${typeName.toUpperCase()}</span>`;
     }
     return pokemonTypes;

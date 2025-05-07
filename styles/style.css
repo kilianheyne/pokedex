@@ -11,8 +11,6 @@
 .flexCo{
     flex-direction: column;
 }
-
-
 #load-more-btn{
     margin-top: 32px;
     margin-bottom: 64px;
@@ -39,6 +37,10 @@
 #load-more-btn:active {
     transform: translateY(2px);
     box-shadow: 0 0 0 #000;
+}
+#prev-btn.disabled{
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .type-bug { background-color: #A8B820; }

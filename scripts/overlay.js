@@ -153,6 +153,18 @@ async function showPreviousPokemon(currentId){
     const previousId = currentId - 1; 
     if(previousId < 1) return;
     await openOverlay(previousId);
+    updatePrevBtn(previousId);
+}
+
+function updatePrevBtn(Id){
+    const btnRef = document.getElementById('prev-btn');
+    if(Id <= 1){
+        btnRef.classList.add('disabled');
+        btnRef.setAttribute('disabled', 'true');
+    }else{
+        btnRef.classList.remove('disabled');
+        btnRef.removeAttribute('disabled');
+    }
 }
 
 function extractIdFromUrl(url) {

@@ -49,7 +49,7 @@ function overlayContainerTemplate(pokemonDetails, flavorText, evoChain){
                             ${returnTypesOverlay(pokemonDetails)}
                         </div>
                         <div class="overlay-navigation">
-                                <button class="nav-btn" onclick="showPreviousPokemon(${pokemonDetails.id})">&#9664;</button>
+                                <button id="prev-btn" class="nav-btn" onclick="showPreviousPokemon(${pokemonDetails.id})">&#9664;</button>
                                 <button class="nav-btn" onclick="showNextPokemon(${pokemonDetails.id})">&#9654;</button>
                         </div>
                     </div>

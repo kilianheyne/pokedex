@@ -103,8 +103,6 @@ header{
             }
         }
     }
-
-    
 }
 
 footer {
@@ -123,7 +121,7 @@ footer {
 main{
     min-height: calc(100dvh - 288px);
     width: 100%;
-    background: url(./assets/imgs/background.png);
+    background: url(./background.png);
     image-rendering: pixelated;
     background-size: cover;
     display: flex;

@@ -116,6 +116,9 @@ footer {
     background: #2A75BB;
     height: 144px;
     width: 100%; 
+    color: white;
+    font-size: 18px;
+    text-align: center;
 }
 
 main{
@@ -316,9 +319,15 @@ main{
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    font-size: 20px;
-    font-family: sans-serif;
+    font-size: 32px;
+    font-family: 'Pixelify Sans', display;
     color: #333;
+    text-align: center;
+
+    img{
+        width: 128px;
+        height: auto;
+    }
 }
 #overlay {
     height: 100dvh;
@@ -332,7 +341,10 @@ main{
     align-items: center;
 
     #overlay-container{
+        display: flex;
+        flex-direction: column;
         width: 40%;
+        min-width: 700px;
         height: auto;
         min-height: 370px;
         background-color: #f1f1f1;
@@ -345,12 +357,16 @@ main{
         max-width: 1536px; /* 80% von 1920px */
         padding: 16px;
 
+        @media (max-width: 768px){
+            min-width: 80%;
+        }
+
         .close-overlay {
             background: #fff;
             border: 2px solid #000;
             padding: 4px 8px;
             cursor: pointer;
-            font-size: 0.7rem;
+            font-size: 12px;
             box-shadow: 2px 2px 0 #000;
             font-family: 'Pixelify Sans', display;
         }
@@ -362,6 +378,12 @@ main{
         #overlay-pokemon-details{
             display: flex;
 
+            @media (max-width: 768px){
+                flex-direction: column-reverse;
+                align-items: center;
+                width: 100%;
+            }
+
             #pokemon-visuals{
                 display: flex;
                 flex-direction: column;
@@ -369,6 +391,10 @@ main{
                 justify-content: space-between;
                 width: 34%;
                 min-height: 280px;
+
+                @media (max-width: 768px){
+                    min-width: 100%;
+                }
 
                 img{
                     width: 112px;
@@ -394,6 +420,10 @@ main{
                     display: flex;
                     justify-content: space-around;
                     width: 100%;
+
+                    @media (max-width: 768px){
+                        justify-content: space-between;
+                    }
 
                     .nav-btn {
                         font-size: 16px;
@@ -426,19 +456,35 @@ main{
                 width: 66%;
                 row-gap: 24px;
 
+                @media (max-width: 768px){
+                    min-width: 100%;
+                    margin-top: 24px;
+                }
+
                 #info-tabs{
                     justify-content: space-around;
                     cursor: pointer;
+                    font-size: 18px;
+
+                    @media (max-width: 430px){
+                        overflow-x: auto;
+                    }
+                }
+                #info-tabs > div {
+                    margin: 4px;
                 }
                 .active-tab{
                     font-weight: bold;
-                    text-decoration: underline;
-                    cursor: default;
+                    text-transform: uppercase;
                 }
             }
         }
         #base-stats{
             width: 100%;
+
+            @media (max-width: 768px){
+                justify-content: center;
+            }
             .stat-bar {
                 display: flex;
                 align-items: center;
@@ -469,13 +515,20 @@ main{
         #evo-chain{
             justify-content: space-around;
             align-items: center;
+
+            @media (max-width: 5398px){
+                flex-direction: column;
+                row-gap: 16px;
+            }
         }
         .evo-step{
             align-items: center;
             text-align: center;
+
         }
         #general-info{
             flex-direction: column;
+            row-gap: 16px;
         }
     }
 }

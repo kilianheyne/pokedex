@@ -81,22 +81,27 @@ async function addNewData(){
 function inputSearch(){
     let inputValue = document.getElementById('user-input').value.toLowerCase();
     if (inputValue.length === 0){
-        updateInputArea(initArray, 'hide', 'show');
+        updateInputArea('hide', 'show');
+        updateMainContent(initArray);
     } else if (inputValue.length >= 3){
         let filteredArray = initArray.filter(pokemon => pokemon.name.includes(inputValue));
-        updateInputArea(filteredArray, 'hide', 'show');
+        updateInputArea('hide', 'show');
+        updateMainContent(filteredArray);
     } else {
-        updateInputArea(initArray, 'show', 'hide');
+        updateInputArea('show', 'hide');
     }
 }
 
-function updateInputArea(array, add, remove){
+function updateInputArea(add, remove){
+    document.getElementById('input-area-span').classList.add(add);
+    document.getElementById('input-area-span').classList.remove(remove);
+}
+
+function updateMainContent(array){
     let mainRef = document.getElementById('main-content');
     mainRef.innerHTML = "";
     userSearch = array;
     renderCards();
-    document.getElementById('input-area-span').classList.add(add);
-    document.getElementById('input-area-span').classList.remove(remove);
 }
 
 async function openOverlay(pokemonId){

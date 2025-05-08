@@ -65,9 +65,11 @@ async function addNewData(){
 function showLoadingGif(){
     document.getElementById('loading-screen').classList.remove('hide');
     document.getElementById('loading-screen').style.zIndex = '9999';
+    document.body.style.overflow = "hidden";
 }
 
 function hideLoadingGif(){
     document.getElementById('loading-screen').classList.add('hide');
     document.getElementById('loading-screen').style.zIndex = '-1';
+    document.body.style.overflow = "auto";
 }

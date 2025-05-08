@@ -23,3 +23,13 @@ function updateMainContent(array){
     userSearch = array;
     renderCards();
 }
+
+function debounce(usedFunction, delay){
+    let timer;
+    return function(...args){
+        clearTimeout(timer);
+        timer = setTimeout(() => usedFunction.apply(this, args), delay);
+    };
+}
+
+const debounceInputSearch = debounce(inputSearch, 300);

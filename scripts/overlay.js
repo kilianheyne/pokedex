@@ -1,5 +1,4 @@
 async function openOverlay(pokemonId){
-    showLoadingGif();
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
     const urlResponse = await fetch(url);
     const urlDetails = await urlResponse.json()
@@ -8,9 +7,8 @@ async function openOverlay(pokemonId){
     const overlayRef = adjustOverlay();
     
     overlayRef.innerHTML += overlayContainerTemplate(urlDetails, flavorText, evoChain);
-    
+    updateNextBtn(pokemonId);
     updatePrevBtn(pokemonId);
-    hideLoadingGif();
 }
 
 function adjustOverlay(){
@@ -132,35 +130,48 @@ function switchTab(tabName) {
     const tabIds = ['base-stats-tab', 'evo-chain-tab', 'general-info-tab'];
 
     for (let i = 0; i < contents.length; i++) {
-        const content = document.getElementById(contents[i]);
-        const tab = document.getElementById(tabIds[i]);
-
         if (contents[i] === tabName) {
-            content.classList.remove('hide');
-            content.classList.add('show');
-            tab.classList.add('active-tab');
+            activeTabStyle(contents[i], tabIds[i]);
         } else {
-            content.classList.remove('show');
-            content.classList.add('hide');
-            tab.classList.remove('active-tab');
+            pausedTabStyle(contents[i], tabIds[i]);
         }
     }
+}
+
+function activeTabStyle(contentId, tabId){
+    document.getElementById(contentId).classList.replace('hide', 'show');
+    document.getElementById(tabId).classList.add('active-tab');
+}
+
+function pausedTabStyle(contentId, tabId){
+    document.getElementById(contentId).classList.replace('show', 'hide');
+    document.getElementById(tabId).classList.remove('active-tab');
 }
 
 async function showNextPokemon(currentId){
     const nextId = currentId + 1;
     if(nextId > 1025) return; //aktuell maximale Anzahl an Pokémon
     const alreadyInArray = initArray.find(pokemon => extractIdFromUrl(pokemon.url) === nextId);
-    if(!alreadyInArray){
-        await fetchData();
+    if(!alreadyInArray) return;
+    openOverlay(nextId);
+    updateNextBtn(currentId);
+}
+
+function updateNextBtn(Id){
+    const btnRef = document.getElementById('next-btn');
+    if (Id == initArray.length){
+        btnRef.classList.add('disabled');
+        btnRef.setAttribute('disabled', 'true');
+    }else{
+        btnRef.classList.remove('disabled');
+        btnRef.removeAttribute('disabled');
     }
-    await openOverlay(nextId);
 }
 
 async function showPreviousPokemon(currentId){
     const previousId = currentId - 1; 
     if(previousId < 1) return;
-    await openOverlay(previousId);
+    openOverlay(previousId);
     updatePrevBtn(previousId);
 }
 
